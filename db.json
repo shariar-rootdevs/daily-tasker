@@ -9,6 +9,16 @@
       "address": "Dhaka, Bangladesh",
       "password": "$2b$10$Evr0UBEhMDxkQWun3uNAXOTwTynFYUWvKSKZz.ZHF9SeRzl0ZAjR2",
       "createdAt": "2025-06-24T16:33:08.808Z"
+    },
+    {
+      "id": 2,
+      "firstName": "John",
+      "lastName": " Don",
+      "email": "john@gmail.com",
+      "phone": "01712519906",
+      "address": "Malipara , Gaibandha",
+      "password": "$2b$10$ewVNk6C2gRYK.nocHgcD/OUJFj.wn2hMVupYCGnaWIaM6IeGsDn36",
+      "createdAt": "2025-06-24T18:08:19.269Z"
     }
   ]
 }

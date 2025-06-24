@@ -1,5 +1,6 @@
 import { readDB } from '@/utils/helper'
 import bcrypt from 'bcrypt'
+import { serialize } from 'cookie'
 import jwt from 'jsonwebtoken'
 import { NextResponse } from 'next/server'
 import { LoginInput } from '../../../../types/login'
@@ -12,7 +13,6 @@ export async function POST(request: Request) {
     const body = (await request.json()) as LoginInput
     const { email, password } = body
 
-    // Read users from db
     const db = await readDB()
 
     const user = db.users.find((u) => u.email === email)
@@ -25,16 +25,27 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 })
     }
 
-    const token = jwt.sign({ userId: user.id, email: user.email }, JWT_SECRET, { expiresIn: '1h' })
+    const token = jwt.sign({ userId: user.id, email: user.email }, JWT_SECRET, { expiresIn: '1d' })
+
+    const serializedCookie = serialize('authToken', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 60 * 60 * 24, // 1 day
+      path: '/',
+    })
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password: _, ...userData } = user
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       message: 'Login successful',
       user: userData,
       token,
     })
+
+    response.headers.set('Set-Cookie', serializedCookie)
+    return response
   } catch (error) {
     console.error('Login error:', error)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })

@@ -1,20 +1,47 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
 import { RegistrationSchema, registrationSchema } from '../../../schemas/registrationSchme'
 
 export default function Page() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<RegistrationSchema>({
-    resolver: zodResolver(registrationSchema), // Ensure this matches the imported schema
+    resolver: zodResolver(registrationSchema),
     mode: 'onTouched',
   })
 
-  const onSubmit = (data: RegistrationSchema) => {
-    console.log(data)
+  const router = useRouter()
+  const onSubmit = async (data: RegistrationSchema) => {
+    try {
+      const response = await fetch('/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+
+      const result = await response.json()
+
+      if (!response.ok) {
+        toast.error(result.error || 'Registration failed')
+        return
+      }
+
+      toast.success('Registration successful!')
+      reset()
+      router.push('/login')
+    } catch (err) {
+      toast.error('Something went wrong!')
+      console.error(err)
+    }
   }
 
   return (
@@ -136,6 +163,13 @@ export default function Page() {
           >
             Register
           </button>
+
+          <p className='text-sm text-center text-gray-600 mt-4'>
+            Already have an account?{' '}
+            <Link href='/login' className='text-blue-600 hover:underline font-medium'>
+              Login
+            </Link>
+          </p>
         </form>
       </div>
     </div>
