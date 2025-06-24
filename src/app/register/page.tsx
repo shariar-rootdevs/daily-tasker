@@ -1,22 +1,24 @@
 'use client'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { UserRegistrationInput } from '../../../types/register'
+import { RegistrationSchema, registrationSchema } from '../../../schemas/registrationSchme'
 
 export default function Page() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<UserRegistrationInput>({
+  } = useForm<RegistrationSchema>({
+    resolver: zodResolver(registrationSchema), // Ensure this matches the imported schema
     mode: 'onTouched',
   })
 
-  const onSubmit = (data: UserRegistrationInput) => {
+  const onSubmit = (data: RegistrationSchema) => {
     console.log(data)
   }
 
   return (
-    <div className='min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-purple-50'>
+    <div className='min-h-screen overflow-y-auto bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center'>
       <div className='w-full max-w-lg mx-4 bg-white rounded-2xl shadow-xl p-8'>
         <h2 className='text-3xl font-bold text-gray-800 mb-8 text-center'>Create Account</h2>
 
