@@ -1,0 +1,14 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "firstName": "Shariar",
+      "lastName": "Duke",
+      "email": "shariar@example.com",
+      "phone": "01700000000",
+      "address": "Dhaka, Bangladesh",
+      "password": "$2b$10$Evr0UBEhMDxkQWun3uNAXOTwTynFYUWvKSKZz.ZHF9SeRzl0ZAjR2",
+      "createdAt": "2025-06-24T16:33:08.808Z"
+    }
+  ]
+}

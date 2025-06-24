@@ -1,0 +1,23 @@
+import { Task } from '../../types/task'
+import { GET } from './api/tasks/route'
+export default async function Home() {
+  const tasks = await GET()
+  const data: Task[] = await tasks.json()
+  console.log('The data is', data)
+  return (
+    <div>
+      <h1>Tasks:</h1>
+      <ul>
+        {data.map((task) => (
+          <li key={task.id}>{task.title}</li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+
+[
+  { "id": 1, "title": "Learn Next.js API routes", "completed": false },
+  { "id": 2, "title": "Build registration & login", "completed": false }
+]
